@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "tuniao-tnui": {
+      "command": "node",
+      "args": ["mcp/dist/index.js"],
+      "env": {}
+    }
+  }
+}

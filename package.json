@@ -1,0 +1,60 @@
+{
+  "name": "tnuitest-mcp-server",
+  "version": "1.0.17",
+  "author": "吴大宝",
+  "description": "MCP server for TNUI (图鸟 UI) component docs and page generation",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "tnuitest-mcp": "bin/cli.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "embed": "tsx scripts/embed-docs.ts",
+    "prebuild": "npm run embed",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node bin/cli.js setup"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "tnui",
+    "tuniao",
+    "uniapp",
+    "vue3",
+    "component-docs"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/ws": "^8.5.10",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "ws": "^8.0.0",
+    "zod": "^3.22.4"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
