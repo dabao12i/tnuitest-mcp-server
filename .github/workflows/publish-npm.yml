@@ -45,7 +45,20 @@ jobs:
       - id: package-version
         run: echo "version=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
 
+      - name: Check release tag match
+        id: version-check
+        run: |
+          TAG='${{ github.event.release.tag_name }}'
+          VERSION='${{ steps.package-version.outputs.version }}'
+          if [ "$TAG" = "$VERSION" ] || [ "$TAG" = "v$VERSION" ]; then
+            echo "matched=true" >> "$GITHUB_OUTPUT"
+            echo "Release tag $TAG matches package.json version $VERSION; proceeding to publish."
+          else
+            echo "matched=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping npm publish: release tag $TAG does not match package.json version $VERSION."
+          fi
+
       - run: npm publish --access public
-        if: github.event.release.tag_name == steps.package-version.outputs.version || github.event.release.tag_name == format('v{0}', steps.package-version.outputs.version)
+        if: steps.version-check.outputs.matched == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
