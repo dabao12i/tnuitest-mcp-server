@@ -41,6 +41,11 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      - id: package-version
+        run: echo "version=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
+
       - run: npm publish --access public
+        if: github.event.release.tag_name == steps.package-version.outputs.version || github.event.release.tag_name == format('v{0}', steps.package-version.outputs.version)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
